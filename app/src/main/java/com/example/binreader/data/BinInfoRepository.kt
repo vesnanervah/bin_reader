@@ -31,3 +31,10 @@ class MockBinInfoRepository: BinInfoRepository {
         )
     }
 }
+
+// TODO: Implement repo, provide network service and get data
+class NetworkBinInfoRepository: BinInfoRepository {
+    override suspend fun getBinInfo(binNumber: String): BinInfo {
+        TODO("Not yet implemented")
+    }
+}
