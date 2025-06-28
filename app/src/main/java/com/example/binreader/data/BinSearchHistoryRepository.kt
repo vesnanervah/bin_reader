@@ -5,8 +5,11 @@ import com.example.binreader.model.BinCountry
 import com.example.binreader.model.BinInfo
 import kotlinx.coroutines.delay
 
+
 interface BinSearchHistoryRepository {
     suspend fun getBinSearchHistory(): List<BinInfo>
+
+    suspend fun addBinSearchToHistory(binInfo: BinInfo)
 }
 
 class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
@@ -47,12 +50,21 @@ class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
             )
         )
     }
+
+    override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
+        delay(1000)
+    }
 }
 
 
 // TODO: Implement local repo, provide local storage and get actual history
 class LocalBinSearchHistoryRepository: BinSearchHistoryRepository {
     override suspend fun getBinSearchHistory(): List<BinInfo> {
+        TODO("Not yet implemented")
+    }
+
+    // TODO: save item to local storage
+    override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
         TODO("Not yet implemented")
     }
 }

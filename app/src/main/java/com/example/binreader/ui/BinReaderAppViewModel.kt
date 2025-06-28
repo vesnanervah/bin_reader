@@ -36,6 +36,7 @@ class BinReaderAppViewModel(
     fun loadInfo(binNumber: String) {
         viewModelScope.launch {
             val result = binInfoRepository.getBinInfo(binNumber)
+            binSearchHistoryRepository.addBinSearchToHistory(result)
             _uiState.update {
                 it.copy(searchResult = result)
             }
