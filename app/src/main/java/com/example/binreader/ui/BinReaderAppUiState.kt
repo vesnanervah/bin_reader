@@ -1,11 +1,9 @@
 package com.example.binreader.ui
 
-import com.example.binreader.model.BinBank
-import com.example.binreader.model.BinCountry
+import com.example.binreader.model.BinInfo
 
 data class BinReaderAppUiState(
-    val selectedBin: String? = null,
-    val binHistory: List<String> = emptyList<String>(),
-    val country: BinCountry? = null,
-    val bank: BinBank? = null,
-)
+    val currentSearch: String? = null,
+    val searchHistory: List<String> = emptyList<String>(),
+    val searchResult: BinInfo? = null,
+    )
