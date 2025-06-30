@@ -48,8 +48,10 @@ fun SearchHistoryItem(binInfo: BinInfo, modifier: Modifier = Modifier) {
                 BinInfoRow("Type: ${binInfo.type}", Icons.Default.Build)
             if (binInfo.bank?.name != null)
                 BinInfoRow("Bank: ${binInfo.bank?.name}", Icons.Default.AccountCircle)
+            // TODO: open url
             if (binInfo.bank?.url != null)
                 BinInfoRow("Bank's website: ${binInfo.bank?.url}", Icons.Default.Share)
+            // TODO: open caller
             if (binInfo.bank?.phone != null)
                 BinInfoRow("Bank's website: ${binInfo.bank?.phone }", Icons.Default.Call)
             if (binInfo.bank?.city != null)
