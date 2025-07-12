@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.binreader.AbstractApplication
 import com.example.binreader.MockApplication
 import com.example.binreader.data.BinInfoRepository
 import com.example.binreader.data.BinSearchHistoryRepository
@@ -47,7 +48,7 @@ class BinReaderAppViewModel(
         // TODO: Dagger DI
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = this[APPLICATION_KEY] as MockApplication
+                val application = this[APPLICATION_KEY] as AbstractApplication
                 BinReaderAppViewModel(application.container.binSearchHistoryRepository, application.container.binInfoRepository)
             }
         }
