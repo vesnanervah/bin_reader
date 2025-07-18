@@ -48,7 +48,7 @@ fun BinReaderApp(
 
 
     Scaffold(
-        topBar = { AppTopBar(appBarTitle, canNavigateUp) { navController.navigateUp() } }
+        topBar = { AppTopBar(appBarTitle, canNavigateUp) { navController.navigate(BinReaderAppScreen.Start.name) } }
     ) {
         Surface(Modifier.fillMaxSize().padding(it)) {
             NavHost(
@@ -89,4 +89,5 @@ fun AppTopBar(title: String?, canNavigateUp: Boolean, navigateUp: () -> Unit) {
           }
         },
     )
+
 }
