@@ -32,14 +32,15 @@ fun StartScreen(
     Column(modifier, Arrangement.Center, Alignment.CenterHorizontally) {
         TextField(
             value,
-            { value = it },
+            { value = it.take(9) },
             isError = showError,
+            singleLine = true,
             placeholder = { Text("Enter BIN number") },
             supportingText = { if(showError) Text("BIN is invalid!")}
         )
         Modifier.padding(top = 16.dp)
         Button({
-            onSubmitTap(value, focusManager,) {
+            onSubmitTap(value, focusManager) {
                 showError = it
                 if (!it) submit(value)
             }

@@ -1,5 +1,6 @@
 package com.example.binreader.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -48,7 +49,7 @@ fun BinReaderApp(
     Scaffold(
         topBar = { AppTopBar(appBarTitle, canNavigateUp) { navController.navigateUp() } }
     ) {
-        Surface(Modifier.padding(it)) {
+        Surface(Modifier.fillMaxSize().padding(it)) {
             NavHost(
                 navController,
                 currentScreen.name

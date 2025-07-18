@@ -24,7 +24,7 @@ import com.example.binreader.model.BinInfo
 @Composable
 fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
     Card(modifier) {
-        Column(androidx.compose.ui.Modifier.padding(horizontal = 8.dp)) {
+        Column(Modifier.padding(horizontal = 8.dp)) {
             if (binInfo.binNumber != null)
                 BinInfoRow("BIN number: ${binInfo.binNumber}", Icons.Default.Search)
             if (binInfo.country?.name != null)
@@ -35,15 +35,15 @@ fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
             if (binInfo.type != null)
                 BinInfoRow("Type: ${binInfo.type}", Icons.Default.Build)
             if (binInfo.bank?.name != null)
-                BinInfoRow("Bank: ${binInfo.bank?.name}", Icons.Default.AccountCircle)
+                BinInfoRow("Bank: ${binInfo.bank.name}", Icons.Default.AccountCircle)
             // TODO: open url
             if (binInfo.bank?.url != null)
-                BinInfoRow("Bank's website: ${binInfo.bank?.url}", Icons.Default.Share)
+                BinInfoRow("Bank's website: ${binInfo.bank.url}", Icons.Default.Share)
             // TODO: open caller
             if (binInfo.bank?.phone != null)
-                BinInfoRow("Bank's website: ${binInfo.bank?.phone }", Icons.Default.Call)
+                BinInfoRow("Bank's website: ${binInfo.bank.phone }", Icons.Default.Call)
             if (binInfo.bank?.city != null)
-                BinInfoRow("Bank's website: ${binInfo.bank?.city }", Icons.Default.Info)
+                BinInfoRow("Bank's website: ${binInfo.bank.city }", Icons.Default.Info)
         }
     }
 }
