@@ -30,8 +30,8 @@ fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
             if (binInfo.country?.name != null)
                 BinInfoRow("Country: ${binInfo.country.name}", Icons.Default.Home)
             // TODO: open map on coordinates tap
-            if (binInfo.country?.latitude != null && binInfo.country?.longitude != null)
-                BinInfoRow("Coordinates: ${binInfo.country?.latitude}:${binInfo.country?.longitude}", Icons.Default.LocationOn)
+            if (binInfo.country?.latitude != null && binInfo.country.longitude != null)
+                BinInfoRow("Coordinates: ${binInfo.country.latitude}:${binInfo.country.longitude}", Icons.Default.LocationOn)
             if (binInfo.type != null)
                 BinInfoRow("Type: ${binInfo.type}", Icons.Default.Build)
             if (binInfo.bank?.name != null)
@@ -41,17 +41,17 @@ fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
                 BinInfoRow("Bank's website: ${binInfo.bank.url}", Icons.Default.Share)
             // TODO: open caller
             if (binInfo.bank?.phone != null)
-                BinInfoRow("Bank's website: ${binInfo.bank.phone }", Icons.Default.Call)
+                BinInfoRow("Bank's phone: ${binInfo.bank.phone }", Icons.Default.Call)
             if (binInfo.bank?.city != null)
-                BinInfoRow("Bank's website: ${binInfo.bank.city }", Icons.Default.Info)
+                BinInfoRow("Bank's city: ${binInfo.bank.city }", Icons.Default.Info)
         }
     }
 }
 
 @Composable
-private fun BinInfoRow(text: String, icon: ImageVector, modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier) {
+private fun BinInfoRow(text: String, icon: ImageVector, modifier: Modifier = Modifier) {
     Row(modifier.padding(vertical = 4.dp)) {
-        Text(text, androidx.compose.ui.Modifier.padding(end = 4.dp))
         Icon(icon, "")
+        Text(text, Modifier.padding(start = 4.dp))
     }
 }
