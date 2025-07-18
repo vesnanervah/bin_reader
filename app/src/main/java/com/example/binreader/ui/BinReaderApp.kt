@@ -1,5 +1,6 @@
 package com.example.binreader.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -77,6 +78,7 @@ fun BinReaderApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(title: String?, canNavigateUp: Boolean, navigateUp: () -> Unit) {
+    BackHandler(canNavigateUp) { navigateUp() }
     TopAppBar(
         title = {
             if (title != null) Text(title)

@@ -41,8 +41,8 @@ fun StartScreen(
         Modifier.padding(top = 16.dp)
         Button({
             onSubmitTap(value, focusManager) {
-                showError = it
-                if (!it) submit(value)
+                showError = !it
+                if (it) submit(value)
             }
         }) { Text("Submit") }
         Modifier.padding(top = 8.dp)
