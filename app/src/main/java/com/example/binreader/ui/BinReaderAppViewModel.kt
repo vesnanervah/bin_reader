@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.binreader.AbstractApplication
-import com.example.binreader.MockApplication
 import com.example.binreader.data.BinInfoRepository
 import com.example.binreader.data.BinSearchHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,23 +22,39 @@ class BinReaderAppViewModel(
     private val _uiState = MutableStateFlow(BinReaderAppUiState())
     val uiState = _uiState.asStateFlow()
 
-    // TODO: handle errors
     fun loadHistory() {
         viewModelScope.launch {
-            val result = binSearchHistoryRepository.getBinSearchHistory()
-            _uiState.update {
-                it.copy(searchHistory = result)
+            try {
+                val result = binSearchHistoryRepository.getBinSearchHistory()
+                _uiState.update {
+                    it.copy(
+                        searchHistory = result,
+                        historyScreenLoadingState = ScreenLoadingState.Successful
+                    )
+                }
+            } catch(e: Error) {
+                _uiState.update {
+                    it.copy(historyScreenLoadingState = ScreenLoadingState.Error)
+                }
             }
         }
     }
 
-    // TODO: handle errors, write successful result in history
     fun loadInfo(binNumber: String) {
         viewModelScope.launch {
-            val result = binInfoRepository.getBinInfo(binNumber)
-            binSearchHistoryRepository.addBinSearchToHistory(result)
-            _uiState.update {
-                it.copy(searchResult = result)
+            try {
+                val result = binInfoRepository.getBinInfo(binNumber)
+                binSearchHistoryRepository.addBinSearchToHistory(result)
+                _uiState.update {
+                    it.copy(
+                        searchResult = result,
+                        resultsScreenLoadingState = ScreenLoadingState.Successful
+                    )
+                }
+            } catch(e: Error) {
+                _uiState.update {
+                    it.copy(resultsScreenLoadingState = ScreenLoadingState.Error)
+                }
             }
         }
     }
