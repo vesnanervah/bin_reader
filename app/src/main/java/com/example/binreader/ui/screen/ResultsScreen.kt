@@ -1,5 +1,6 @@
 package com.example.binreader.ui.screen
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.example.binreader.model.BinInfo
 import com.example.binreader.ui.ScreenLoadingState
@@ -11,5 +12,8 @@ fun ResultsScreen(binInfo: BinInfo? = null, screenLoadingState: ScreenLoadingSta
     ScreenLoadingStateResolver(screenLoadingState) {
         if (binInfo != null)
             BinInfoCard(binInfo)
+        if (binInfo == null && screenLoadingState == ScreenLoadingState.Successful) {
+            Text("Cannot find the information. Check if BIN was correct.")
+        }
     }
 }

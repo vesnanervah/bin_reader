@@ -44,7 +44,9 @@ class BinReaderAppViewModel(
         viewModelScope.launch {
             try {
                 val result = binInfoRepository.getBinInfo(binNumber)
-                binSearchHistoryRepository.addBinSearchToHistory(result)
+                if (result != null) {
+                    binSearchHistoryRepository.addBinSearchToHistory(result)
+                }
                 _uiState.update {
                     it.copy(
                         searchResult = result,

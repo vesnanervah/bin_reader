@@ -6,12 +6,12 @@ import com.example.binreader.model.BinInfo
 import kotlinx.coroutines.delay
 
 interface BinInfoRepository {
-    suspend fun getBinInfo(binNumber: String): BinInfo
+    suspend fun getBinInfo(bin: String): BinInfo?
 
 }
 
 class MockBinInfoRepository: BinInfoRepository {
-    override suspend fun getBinInfo(binNumber: String): BinInfo {
+    override suspend fun getBinInfo(bin: String): BinInfo {
         delay(2000)
         return BinInfo(
             scheme = "visa",
@@ -34,7 +34,7 @@ class MockBinInfoRepository: BinInfoRepository {
 
 // TODO: Implement repo, provide network service and get data
 class NetworkBinInfoRepository: BinInfoRepository {
-    override suspend fun getBinInfo(binNumber: String): BinInfo {
+    override suspend fun getBinInfo(bin: String): BinInfo? {
         TODO("Not yet implemented")
     }
 }
