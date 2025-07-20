@@ -40,12 +40,12 @@ class BinReaderAppViewModel(
         }
     }
 
-    fun loadInfo(binNumber: String) {
+    fun loadInfo(bin: String) {
         viewModelScope.launch {
             try {
-                val result = binInfoRepository.getBinInfo(binNumber)
+                val result = binInfoRepository.getBinInfo(bin.filter { it != ' ' })
                 if (result != null) {
-                    binSearchHistoryRepository.addBinSearchToHistory(result)
+                    binSearchHistoryRepository.addBinSearchToHistory(result.copy(bin))
                 }
                 _uiState.update {
                     it.copy(

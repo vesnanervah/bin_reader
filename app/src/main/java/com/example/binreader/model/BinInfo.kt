@@ -1,5 +1,8 @@
 package com.example.binreader.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class BinInfo(
     val binNumber: String? = null,
     val scheme: String? = null,

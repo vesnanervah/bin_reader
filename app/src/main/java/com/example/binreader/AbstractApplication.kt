@@ -6,5 +6,5 @@ import com.example.binreader.data.AppContainer
 abstract class AbstractApplication: Application() {
 
     lateinit var container: AppContainer
-
+    
 }
