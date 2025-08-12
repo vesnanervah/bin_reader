@@ -2,6 +2,7 @@ package com.example.binreader.ui.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -23,7 +24,7 @@ import com.example.binreader.model.BinInfo
 
 @Composable
 fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
-    Card(modifier) {
+    Card(modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             if (binInfo.binNumber != null)
                 BinInfoRow("BIN number: ${binInfo.binNumber}", Icons.Default.Search)
