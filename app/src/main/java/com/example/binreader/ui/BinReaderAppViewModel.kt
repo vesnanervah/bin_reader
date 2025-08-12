@@ -21,7 +21,7 @@ class BinReaderAppViewModel(
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(BinReaderAppUiState())
-    private val _searchHistoryFlow = binSearchHistoryRepository.getBinSearchHistoryFlow()
+    private val _searchHistoryFlow = binSearchHistoryRepository.searchHistoryStateFlow
     val uiState = _uiState.asStateFlow()
 
 

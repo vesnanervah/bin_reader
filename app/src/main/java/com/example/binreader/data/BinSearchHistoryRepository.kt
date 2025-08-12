@@ -9,7 +9,6 @@ import com.example.binreader.model.BinInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -18,7 +17,7 @@ import kotlinx.serialization.json.Json
 
 interface BinSearchHistoryRepository {
 
-    val searchHistoryStateFlow: StateFlow<List<BinInfo>>
+    val searchHistoryStateFlow: Flow<List<BinInfo>>
 
     suspend fun addBinSearchToHistory(binInfo: BinInfo)
 }
@@ -45,7 +44,7 @@ class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
         )
     )
 
-    override val searchHistoryStateFlow: StateFlow<List<BinInfo>> = searchHistoryFlow.asStateFlow()
+    override val searchHistoryStateFlow = searchHistoryFlow.asStateFlow()
 
     override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
         delay(1000)
@@ -54,15 +53,14 @@ class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
 }
 
 
-class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferences>,
-                                      override val searchHistoryStateFlow: StateFlow<List<BinInfo>>
-): BinSearchHistoryRepository {
+class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferences>): BinSearchHistoryRepository {
     private val storageKey = stringPreferencesKey("bins")
     private val jsonFactory = Json {
         prettyPrint = true
         ignoreUnknownKeys = true
     }
-    private val historyFlow: Flow<List<BinInfo>> = dataStore.data.map {
+
+    override val searchHistoryStateFlow = dataStore.data.map {
         decodeHistoryFromPreferences(it)
     }
 
@@ -77,12 +75,12 @@ class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferenc
     }
 
     override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
-        /* dataStore.updateData {
-            val current = getBinSearchHistory()
+        dataStore.updateData {
+            val history = decodeHistoryFromPreferences(it)
             val preference = it.toMutablePreferences()
-            val encodedHistory = jsonFactory.encodeToString(current.plus(binInfo))
+            val encodedHistory = jsonFactory.encodeToString(history.plus(binInfo))
             preference[storageKey] = encodedHistory
             preference
-        }*/
+        }
     }
 }
