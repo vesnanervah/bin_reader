@@ -9,16 +9,16 @@ import com.example.binreader.model.BinInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 
 
 interface BinSearchHistoryRepository {
-    // TODO: replace into field with private setter and some immutable structure as getter
-    fun getBinSearchHistoryFlow(): MutableStateFlow<List<BinInfo>>
+
+    val searchHistoryStateFlow: StateFlow<List<BinInfo>>
 
     suspend fun addBinSearchToHistory(binInfo: BinInfo)
 }
@@ -45,9 +45,7 @@ class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
         )
     )
 
-    override fun getBinSearchHistoryFlow(): MutableStateFlow<List<BinInfo>>  {
-        return searchHistoryFlow
-    }
+    override val searchHistoryStateFlow: StateFlow<List<BinInfo>> = searchHistoryFlow.asStateFlow()
 
     override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
         delay(1000)
@@ -56,7 +54,9 @@ class MockBinSearchHistoryRepository: BinSearchHistoryRepository {
 }
 
 
-class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferences>): BinSearchHistoryRepository {
+class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferences>,
+                                      override val searchHistoryStateFlow: StateFlow<List<BinInfo>>
+): BinSearchHistoryRepository {
     private val storageKey = stringPreferencesKey("bins")
     private val jsonFactory = Json {
         prettyPrint = true
@@ -75,11 +75,6 @@ class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferenc
         if((value ?: "").isEmpty()) return emptyList<BinInfo>()
         return jsonFactory.decodeFromString<List<BinInfo>>(value!!)
     }
-
-    override fun getBinSearchHistoryFlow(): MutableStateFlow<List<BinInfo>> {
-        TODO("Not yet implemented")
-    }
-
 
     override suspend fun addBinSearchToHistory(binInfo: BinInfo) {
         /* dataStore.updateData {
