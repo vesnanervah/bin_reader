@@ -39,9 +39,15 @@ fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
                 BinInfoRow("BIN number: ${binInfo.binNumber}", Icons.Default.Search)
             if (binInfo.country?.name != null)
                 BinInfoRow("Country: ${binInfo.country.name}", Icons.Default.Home)
-            // TODO: open map on coordinates tap
             if (binInfo.country?.latitude != null && binInfo.country.longitude != null)
-                BinInfoRow("Coordinates: ${binInfo.country.latitude}:${binInfo.country.longitude}", Icons.Default.LocationOn)
+                BinInfoRow(
+                    "Coordinates: ${binInfo.country.latitude}:${binInfo.country.longitude}",
+                    Icons.Default.LocationOn,
+                    Modifier.clickable() {
+                        val intent = Intent(Intent.ACTION_VIEW).apply { data = "geo:${binInfo.country.latitude},${binInfo.country.longitude}".toUri() }
+                        context.startActivity(intent)
+                    }
+                )
             if (binInfo.type != null)
                 BinInfoRow("Type: ${binInfo.type}", Icons.Default.Build)
             if (binInfo.bank?.name != null)
