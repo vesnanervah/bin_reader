@@ -1,5 +1,8 @@
 package com.example.binreader.ui.common
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,11 +22,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.example.binreader.model.BinInfo
+import androidx.core.net.toUri
 
 @Composable
 fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
+
     Card(modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             if (binInfo.binNumber != null)
@@ -37,12 +46,21 @@ fun BinInfoCard(binInfo: BinInfo, modifier: Modifier = Modifier) {
                 BinInfoRow("Type: ${binInfo.type}", Icons.Default.Build)
             if (binInfo.bank?.name != null)
                 BinInfoRow("Bank: ${binInfo.bank.name}", Icons.Default.AccountCircle)
-            // TODO: open url
             if (binInfo.bank?.url != null)
-                BinInfoRow("Bank's website: ${binInfo.bank.url}", Icons.Default.Share)
-            // TODO: open caller
+                BinInfoRow(
+                    "Bank's website: ${binInfo.bank.url}",
+                    Icons.Default.Share,
+                    Modifier.clickable() { uriHandler.openUri(binInfo.bank.url)  }
+                )
             if (binInfo.bank?.phone != null)
-                BinInfoRow("Bank's phone: ${binInfo.bank.phone }", Icons.Default.Call)
+                BinInfoRow(
+                    "Bank's phone: ${binInfo.bank.phone }",
+                    Icons.Default.Call,
+                    Modifier.clickable() {
+                        val intent = Intent(Intent.ACTION_DIAL).apply { data = "tel:${binInfo.bank.phone}".toUri() }
+                        context.startActivity(intent)
+                    }
+                )
             if (binInfo.bank?.city != null)
                 BinInfoRow("Bank's city: ${binInfo.bank.city }", Icons.Default.Info)
         }
