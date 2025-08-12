@@ -18,8 +18,8 @@ fun HistoryScreen(
 ) {
     ScreenLoadingStateResolver(screenLoadingState) {
         if(binSearchHistory != null)
-        LazyColumn {
-            items(binSearchHistory) { BinInfoCard(it, Modifier.padding(all = 16.dp)) }
+        LazyColumn(Modifier.padding(all = 16.dp)) {
+            items(binSearchHistory) { BinInfoCard(it, Modifier.padding(bottom = 8.dp)) }
         }
     }
 }
