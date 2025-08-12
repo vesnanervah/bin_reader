@@ -1,5 +1,7 @@
 package com.example.binreader.data
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,7 +19,7 @@ class MockAppContainer: AppContainer  {
     override val binSearchHistoryRepository: BinSearchHistoryRepository = MockBinSearchHistoryRepository()
 }
 
-class RealAppContainer() : AppContainer {
+class RealAppContainer(private val dataStore: DataStore<Preferences>) : AppContainer {
     private val httpClient = HttpClient(Android) {
        install(ContentNegotiation) {
            json(
@@ -31,7 +33,7 @@ class RealAppContainer() : AppContainer {
     }
 
     override val binInfoRepository: BinInfoRepository by lazy { NetworkBinInfoRepository(httpClient) }
-    // TODO: Real repository
-    override val binSearchHistoryRepository: BinSearchHistoryRepository = MockBinSearchHistoryRepository()
+    override val binSearchHistoryRepository: BinSearchHistoryRepository =
+        LocalBinSearchHistoryRepository(dataStore)
 
 }

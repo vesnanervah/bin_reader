@@ -1,5 +1,6 @@
 package com.example.binreader.ui
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -11,6 +12,7 @@ import com.example.binreader.data.BinInfoRepository
 import com.example.binreader.data.BinSearchHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,40 +22,34 @@ class BinReaderAppViewModel(
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(BinReaderAppUiState())
+    private val _searchHistoryFlow = binSearchHistoryRepository.getBinSearchHistoryFlow()
     val uiState = _uiState.asStateFlow()
 
-    fun loadHistory() {
+
+    fun fetchSearchHistory() {
         viewModelScope.launch {
-            try {
-                val result = binSearchHistoryRepository.getBinSearchHistory()
-                _uiState.update {
-                    it.copy(
-                        searchHistory = result,
-                        historyScreenLoadingState = ScreenLoadingState.Successful
-                    )
-                }
-            } catch(e: Error) {
-                _uiState.update {
-                    it.copy(historyScreenLoadingState = ScreenLoadingState.Error)
-                }
+            _searchHistoryFlow.collectLatest {
+                latest -> _uiState.update { it.copy(searchHistory = latest, historyScreenLoadingState = ScreenLoadingState.Successful) }
             }
         }
     }
 
+
     fun loadInfo(bin: String) {
         viewModelScope.launch {
             try {
-                val result = binInfoRepository.getBinInfo(bin.filter { it != ' ' })
-                if (result != null) {
-                    binSearchHistoryRepository.addBinSearchToHistory(result.copy(bin))
-                }
+                val result = binInfoRepository.getBinInfo(bin.filter { it != ' ' })?.copy(bin)
                 _uiState.update {
                     it.copy(
                         searchResult = result,
                         resultsScreenLoadingState = ScreenLoadingState.Successful
                     )
                 }
-            } catch(e: Error) {
+                if (result != null) {
+                    _uiState.update { it.copy(historyScreenLoadingState = ScreenLoadingState.Pending) }
+                    binSearchHistoryRepository.addBinSearchToHistory(result)
+                }
+            } catch(e: Exception) {
                 _uiState.update {
                     it.copy(resultsScreenLoadingState = ScreenLoadingState.Error)
                 }

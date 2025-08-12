@@ -6,7 +6,6 @@ import com.example.binreader.model.BinInfo
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.delay
 
 interface BinInfoRepository {

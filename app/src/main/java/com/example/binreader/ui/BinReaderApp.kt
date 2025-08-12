@@ -57,7 +57,7 @@ fun BinReaderApp(
             ) {
                 composable(BinReaderAppScreen.Start.name) {
                     StartScreen(onHistoryTap = {
-                        viewModel.loadHistory()
+                        viewModel.fetchSearchHistory()
                         navController.navigate(BinReaderAppScreen.History.name)
                     }) {
                         viewModel.loadInfo(it)
