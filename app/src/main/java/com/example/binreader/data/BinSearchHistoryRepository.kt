@@ -78,7 +78,8 @@ class LocalBinSearchHistoryRepository(private val dataStore: DataStore<Preferenc
         dataStore.updateData {
             val history = decodeHistoryFromPreferences(it)
             val preference = it.toMutablePreferences()
-            val encodedHistory = jsonFactory.encodeToString(history.plus(binInfo))
+            val filteredHistory = history.filter { savedBin -> savedBin.binNumber != binInfo.binNumber }
+            val encodedHistory = jsonFactory.encodeToString(filteredHistory.plus(binInfo))
             preference[storageKey] = encodedHistory
             preference
         }
